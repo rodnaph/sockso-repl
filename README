@@ -1,5 +1,20 @@
 
-# sockso-repl
+sockso-repl
+===========
 
 This project provides a REPL for talking to a Sockso server.  This allows querying the collections, and playing results.
+
+Starting
+--------
+
+@todo - how to start the repl
+
+Commands
+--------
+
+*connect* - Connect to a server
+
+<pre>
+connect 127.0.0.1:4444
+</pre>
 
