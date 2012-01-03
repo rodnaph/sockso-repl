@@ -1,17 +1,12 @@
 
-(ns sockso-repl.urls)
+(ns sockso-repl.urls
+    (:use [clojure.java.io :as io]))
 
-(defn- url-read [^java.io.BufferedReader in]
-    (loop [data ""]
+(defn url-get [url]
+    (loop [in (io/make-reader url {})
+           data ""]
         (let [line (.readLine in)]
             (if (nil? line)
                 data
-                (recur (str data line))))))
-
-(defn url-get [url]
-    (let [url (java.net.URL. url)
-          stream (java.io.InputStreamReader. (.openStream url))
-          in (java.io.BufferedReader. stream)]
-        (println (format "View url: %s" url))
-        (println "Data: " (url-read in))))
+                (recur in (str data line))))))
 
