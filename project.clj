@@ -1,3 +1,3 @@
-(defproject sockso-repl "1.0.0-SNAPSHOT"
-  :description "FIXME: write description"
+(defproject sockso-repl "0.0.1"
+  :description "A REPL for Sockso servers"
   :dependencies [[org.clojure/clojure "1.3.0"]])
