@@ -1,5 +1,6 @@
 
 (ns sockso-repl.core
+    (:gen-class)
     (:use [sockso-repl.urls :as urls])
     (:use [clojure.string :as string]))
 
