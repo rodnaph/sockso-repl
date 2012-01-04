@@ -6,21 +6,23 @@
 (defmulti command :name)
 
 (defmethod command :connect 
-    "Command: set current server we're connecting to"
-    [args]
-    (println "CONNECT PLS"))
+    [{:keys [name args]}]
+    (println (format "Server changed to %s" (:host args))))
+
+(defmethod command :default
+    [{:keys [name args]}]
+    (println (format "ERROR: Unknown command %s" name)))
 
 (defn parse-command-arg
     "Parse a command arg pair into a map with :name and :value keys"
     [pair]
     (let [[name value] (string/split pair #"=")]
-        {:name name :value value}))
+        (hash-map (keyword name) value)))
 
 (defn parse-command-args
-    "Parses name/value argument pairs into a list of argument maps"
+    "Parses name/value argument pairs into a map" 
     [lst]
-    (reduce #(conj %1 (parse-command-arg %2))
-        '()  lst))
+    (reduce #(merge %1 (parse-command-arg %2)) {} lst))
 
 (defn parse-command-str
     "Parse command string into map of name and arguments"
