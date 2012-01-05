@@ -8,8 +8,8 @@
 (defmacro defcommand [name comment args & body]
     `(defmethod command ~name
         [{name# :name args# :args}]
-            (let [{:keys [~@args]} args#]
-                ~body)))
+            (let [{:keys [~@args]} args#] 
+                (do ~@body))))
 
 (defmulti command :name)
 
@@ -46,8 +46,7 @@
     []
     (let [in (io/make-reader *in* {})]
         (while true
-            (let [line (.readLine in)]
-                (command (parse-command-str line))))))
+            (command (parse-command-str (.readLine in))))))
 
 (defn -main[]
     (run-repl))
