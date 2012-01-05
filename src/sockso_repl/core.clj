@@ -4,11 +4,20 @@
     (:use [sockso-repl.urls :as urls])
     (:use [clojure.string :as string]))
 
+(macroexpand-1 '(defcommand :connect [host] (println host)))
+
+(defmacro defcommand [name args & body]
+    `(defmethod command ~name
+        [{:keys [name# [{:keys [~@args]}]]}]
+            (do ~body)))
+
 (defmulti command :name)
 
-(defmethod command :connect 
-    [{:keys [name args]}]
-    (println (format "Server changed to %s" (:host args))))
+(command (parse-command-str "connect host=foo"))
+
+(defcommand :connect
+    [host]
+    (println (format "Server changed to %s" host)))
 
 (defmethod command :default
     [{:keys [name args]}]
