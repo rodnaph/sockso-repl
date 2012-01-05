@@ -2,26 +2,26 @@
 (ns sockso-repl.core
     (:gen-class)
     (:use [sockso-repl.urls :as urls])
+    (:use [clojure.java.io :as io])
     (:use [clojure.string :as string]))
 
-(macroexpand-1 '(defcommand :connect [host] (println host)))
-
-(defmacro defcommand [name args & body]
+(defmacro defcommand [name comment args & body]
     `(defmethod command ~name
-        [{:keys [name# [{:keys [~@args]}]]}]
-            (do ~body)))
+        [{name# :name args# :args}]
+            (let [{:keys [~@args]} args#]
+                ~body)))
 
 (defmulti command :name)
 
-(command (parse-command-str "connect host=foo"))
-
 (defcommand :connect
+    "Connect to a new server"
     [host]
     (println (format "Server changed to %s" host)))
 
-(defmethod command :default
-    [{:keys [name args]}]
-    (println (format "ERROR: Unknown command %s" name)))
+(defcommand :default
+    "Print error on known command"
+    []
+    (println "ERROR: Unknown command"))
 
 (defn parse-command-arg
     "Parse a command arg pair into a map with :name and :value keys"
@@ -41,6 +41,14 @@
         {:name (keyword name)
          :args (parse-command-args args)}))
 
+(defn run-repl
+    "Read commands and execute them"
+    []
+    (let [in (io/make-reader *in* {})]
+        (while true
+            (let [line (.readLine in)]
+                (command (parse-command-str line))))))
+
 (defn -main[]
-    (println "Hello!"))
+    (run-repl))
 
