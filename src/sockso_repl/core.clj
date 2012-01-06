@@ -5,13 +5,13 @@
     (:use [clojure.java.io :as io])
     (:use [clojure.string :as string]))
 
+(defmulti command :name)
+
 (defmacro defcommand [name comment args & body]
     `(defmethod command ~name
-        [{name# :name args# :args}]
+        [{args# :args}]
             (let [{:keys [~@args]} args#] 
                 (do ~@body))))
-
-(defmulti command :name)
 
 (defcommand :connect
     "Connect to a new server"
