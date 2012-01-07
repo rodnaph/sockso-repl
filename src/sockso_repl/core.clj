@@ -70,12 +70,21 @@
         {:name (keyword name)
          :args (parse-command-args args)}))
 
+(defn print-prompt
+    "Prints the shell prompt"
+    []
+    (print "=> ")
+    (flush))
+
 (defn run-repl
     "Read commands and execute them"
     []
-    (let [in (io/make-reader *in* {})]
-        (while true
-            (command (parse-command-str (.readLine in))))))
+    (loop [] 
+        (print-prompt)
+        (let [line (read-line)]
+            (if (> (.length line) 0)
+                (command (parse-command-str line)))
+        (recur))))
 
 (defn -main[]
     (run-repl))
