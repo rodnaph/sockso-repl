@@ -1,6 +1,6 @@
 
 (ns sockso-repl.print
-    (:use [clojure.string :as string]))
+    (:require [clojure.string :as string]))
 
 (defn error
     "Print an error message"
@@ -19,6 +19,23 @@
     (println "Welcome to the Sockso REPL")
     (println "Type 'help' for commands")
     (println ""))
+
+(defn help
+    "Prints help information"
+    []
+    (println "List of commands:")
+    (println "")
+    (println "\tconnect host=XXX")
+    (println "\tserver")
+    (println "\tsearch query=XXX")
+    (println "\tplay id=XXX")
+    (println "\texit")
+    (println ""))
+
+(defn server
+    "Print server info"
+    [host]
+    (println (format "Server: %s" host)))
 
 (defn format-search-result
     "Format a search result"

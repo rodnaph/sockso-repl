@@ -1,9 +1,9 @@
 
 (ns sockso-repl.core
     (:gen-class)
-    (:use [sockso-repl.urls :as urls])
-    (:use [sockso-repl.print :as print])
-    (:use [clojure.string :as string]))
+    (:require [sockso-repl.urls :as urls])
+    (:require [sockso-repl.print :as print])
+    (:require [clojure.string :as string]))
 
 (def server (atom {
     :host "127.0.0.1:4444"
@@ -27,17 +27,37 @@
             (let [{:keys [~@args]} args#] 
                 (do ~@body))))
 
-(defcommand :server
+(defcommand :connect
     "Connect to a new server"
     [host]
     (server-set :host host)
-    (println (format "Server changed to %s" host)))
+    (print/server host))
+
+(defcommand :server
+    "Show current server information"
+    []
+    (print/server (server-get :host)))
 
 (defcommand :search
     "Search the current server"
     [query]
     (let [url (format "http://%s/json/search/%s" (server-get :host) query)]
         (print/search-results (urls/url-get-json url))))
+
+(defcommand :help
+    "Print a help information"
+    []
+    (print/help))
+
+(defcommand :play
+    "Play the specified music item"
+    [id]
+    true)
+
+(defcommand :exit
+    "Exit the REPL"
+    []
+    false)
 
 (defcommand :default
     "Print error on known command"
