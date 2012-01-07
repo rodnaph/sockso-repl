@@ -5,7 +5,9 @@
     (:use [clojure.java.io :as io])
     (:use [clojure.string :as string]))
 
-(def server (atom {}))
+(def server (atom {
+    :host "127.0.0.1:4444"
+}))
 
 (defn server-set
     "Set a server parameter"
@@ -31,18 +33,19 @@
     (server-set :host host)
     (println (format "Server changed to %s" host)))
 
-(defn print-search-result
-    "Print a formatted search result"
+(defn format-search-result
+    "Format a search result"
     [res]
-    (println (format "#%s %s" 
+    (format "#%s %s" 
         (get res "id")
-        (get res "name"))))
+        (get res "name")))
 
 (defcommand :search
     "Search the current server"
     [query]
     (let [url (format "http://%s/json/search/%s" (server-get :host) query)]
-        (map print-search-result (urls/url-get-json url))))
+        (println (join "\n"
+            (map format-search-result (urls/url-get-json url))))))
 
 (defcommand :default
     "Print error on known command"
