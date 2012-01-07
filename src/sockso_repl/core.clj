@@ -5,6 +5,18 @@
     (:use [clojure.java.io :as io])
     (:use [clojure.string :as string]))
 
+(def server (atom {}))
+
+(defn server-set
+    "Set a server parameter"
+    [key value]
+    (swap! server assoc (keyword key) value))
+
+(defn server-get
+    "Fetch a server parameter"
+    [key]
+    ((keyword key) @server))
+
 (defmulti command :name)
 
 (defmacro defcommand [name comment args & body]
@@ -16,7 +28,21 @@
 (defcommand :connect
     "Connect to a new server"
     [host]
+    (server-set :host host)
     (println (format "Server changed to %s" host)))
+
+(defn print-search-result
+    "Print a formatted search result"
+    [res]
+    (println (format "#%s %s" 
+        (get res "id")
+        (get res "name"))))
+
+(defcommand :search
+    "Search the current server"
+    [query]
+    (let [url (format "http://%s/json/search/%s" (server-get :host) query)]
+        (map print-search-result (urls/url-get-json url))))
 
 (defcommand :default
     "Print error on known command"
