@@ -10,7 +10,7 @@
 (defn prompt
     "Prints the shell prompt"
     []
-    (print "=> ")
+    (print "sockso=> ")
     (flush))
 
 (defn welcome
