@@ -38,3 +38,8 @@
     []
     @p)
 
+(defn player-playlist-clear
+    "Clears the playlist"
+    []
+    (reset! p '()))
+

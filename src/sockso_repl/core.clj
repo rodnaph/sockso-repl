@@ -53,6 +53,11 @@
     []
     (print/playlist (player/player-playlist)))
 
+(defcommand :playlist-clear
+    "Clears the playlist"
+    []
+    (player/player-playlist-clear))
+
 (defcommand :exit
     "Exit the REPL"
     []
