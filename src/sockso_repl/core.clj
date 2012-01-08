@@ -42,6 +42,12 @@
     [id]
     (audio/play-id id))
 
+(defcommand :artists
+    "Display artists"
+    []
+    (let [url (format "http://%s/api/artists?limit=-1" (server/prop-get :host))]
+        (print/music-items (urls/url-get-json url))))
+
 (defcommand :exit
     "Exit the REPL"
     []

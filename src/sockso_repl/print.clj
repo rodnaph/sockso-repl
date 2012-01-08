@@ -20,6 +20,19 @@
     (println "Type 'help' for commands")
     (println ""))
 
+(defn- format-music-item
+    "Print a music item"
+    [item & prefix]
+    (format "#%s%s %s" 
+        (if (empty? prefix) "" (first prefix))
+        (get item "id")
+        (get item "name")))
+
+(defn music-items
+    [lst]
+    (doseq [item lst]
+        (println (format-music-item item "ar"))))
+
 (defn help
     "Prints help information"
     []
@@ -28,6 +41,7 @@
     (println "\tconnect host=XXX")
     (println "\tserver")
     (println "\tsearch query=XXX")
+    (println "\tartists")
     (println "\tplay id=XXX")
     (println "\texit")
     (println ""))
@@ -37,15 +51,9 @@
     [host]
     (println (format "Server: %s" host)))
 
-(defn format-search-result
-    "Format a search result"
-    [res]
-    (format "#%s %s" 
-        (get res "id")
-        (get res "name")))
-
 (defn search-results
     "Print a vector of search results"
     [results]
-    (println (string/join "\n" (map format-search-result results))))
+    (doseq [item results]
+        (println (format-music-item item))))
 
