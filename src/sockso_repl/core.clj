@@ -2,22 +2,10 @@
 (ns sockso-repl.core
     (:gen-class)
     (:require [sockso-repl.urls :as urls])
+    (:require [sockso-repl.server :as server])
     (:require [sockso-repl.print :as print])
+    (:require [sockso-repl.audio :as audio])
     (:require [clojure.string :as string]))
-
-(def server (atom {
-    :host "127.0.0.1:4444"
-}))
-
-(defn server-set
-    "Set a server parameter"
-    [key value]
-    (swap! server assoc (keyword key) value))
-
-(defn server-get
-    "Fetch a server parameter"
-    [key]
-    ((keyword key) @server))
 
 (defmulti command :name)
 
@@ -30,18 +18,18 @@
 (defcommand :connect
     "Connect to a new server"
     [host]
-    (server-set :host host)
+    (server/prop-set :host host)
     (print/server host))
 
 (defcommand :server
     "Show current server information"
     []
-    (print/server (server-get :host)))
+    (print/server (server/prop-get :host)))
 
 (defcommand :search
     "Search the current server"
     [query]
-    (let [url (format "http://%s/json/search/%s" (server-get :host) query)]
+    (let [url (format "http://%s/json/search/%s" (server/prop-get :host) query)]
         (print/search-results (urls/url-get-json url))))
 
 (defcommand :help
@@ -52,7 +40,7 @@
 (defcommand :play
     "Play the specified music item"
     [id]
-    true)
+    (audio/play-id id))
 
 (defcommand :exit
     "Exit the REPL"
