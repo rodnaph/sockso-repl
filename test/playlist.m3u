@@ -1,0 +1,6 @@
+#EXTM3U
+#EXTINF:-1,The Herbaliser - Opening Credits
+http://localhost:4444/stream/21295/TheHerbaliser-OpeningCredits
+#EXTINF:-1,The Herbaliser - The Blend (Feat. What? What?)
+http://localhost:4444/stream/21296/TheHerbaliser-TheBlendFeatWhatWhat
+

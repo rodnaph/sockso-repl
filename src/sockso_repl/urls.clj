@@ -1,17 +1,19 @@
 
 (ns sockso-repl.urls
     (:use [cheshire.core])
-    (:use [clojure.java.io :as io]))
+    (:use [clojure.java.io :as io])
+    (:require [clojure.string :as string]))
 
-(defn url-get 
+(defn url-get-lines
     "Fetch data from the specified URL"
     [url]
-    (loop [in (io/make-reader url {})
-           data ""]
-        (let [line (.readLine in)]
-            (if (nil? line)
-                data
-                (recur in (str data line))))))
+    (let [in (io/make-reader url {})]
+        (line-seq in)))
+
+(defn url-get
+    "Fetch data from a URL"
+    [url]
+    (string/join (url-get-lines url)))
 
 (defn url-get-json 
     "Fetch and parse JSON from the specified URL"
