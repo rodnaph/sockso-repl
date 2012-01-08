@@ -29,7 +29,7 @@
 (defcommand :search
     "Search the current server"
     [query]
-    (let [url (format "http://%s/json/search/%s" (server/prop-get :host) query)]
+    (let [url (server/url "/json/search/%s" query)]
         (print/search-results (urls/url-get-json url))))
 
 (defcommand :help
@@ -45,7 +45,7 @@
 (defcommand :artists
     "Display artists"
     []
-    (let [url (format "http://%s/api/artists?limit=-1" (server/prop-get :host))]
+    (let [url (server/url "/api/artists?limit=-1")]
         (print/music-items (urls/url-get-json url))))
 
 (defcommand :exit

@@ -15,3 +15,9 @@
     [key]
     ((keyword key) @server))
 
+(defn url
+    "Fetch a url using the specified formatted resource"
+    [resource & args]
+    (format "http://%s%s" (prop-get :host)
+                          (apply (partial format resource) args)))
+
