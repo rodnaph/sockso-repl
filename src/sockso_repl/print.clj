@@ -42,6 +42,7 @@
     (println "\tserver")
     (println "\tsearch query=XXX")
     (println "\tartists")
+    (println "\tplaylist")
     (println "\tplay id=XXX")
     (println "\texit")
     (println ""))
@@ -56,4 +57,10 @@
     [results]
     (doseq [item results]
         (println (format-music-item item))))
+
+(defn playlist
+    "Print the current playlist"
+    [playlist]
+    (doseq [item playlist]
+        (println (format "> %s" (item :info)))))
 

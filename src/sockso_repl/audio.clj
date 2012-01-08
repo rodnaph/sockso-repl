@@ -12,18 +12,14 @@
         (exec (str p))
         (waitFor))) 
 
+(defn play-item
+    "Play a music item map of URL and info"
+    [item]
+    (println (format "Play: %s (%s)" (item :info) (item :url)))
+    (cmd (format "mpg123 %s" (item :url))))
+
 (defn play-url
     "Play the music specified by the ID (eg. al123, tr456, etc...)"
     [url]
-    (println (format "Play: %s" url))
-    (cmd (format "mpg123 %s" url)))
-
-(defn play-id
-    "Play some music by ID"
-    [id]
-    (let [m3u (server/url "/m3u/%s" id)]
-        (loop [urls (m3u-parse-url m3u)]
-            (if (not (empty? urls))
-                (do (play-url (first urls))
-                    (recur (rest urls)))))))
+    (play-item {:info url :url url}))
 

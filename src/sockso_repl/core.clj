@@ -4,7 +4,7 @@
     (:require [sockso-repl.urls :as urls])
     (:require [sockso-repl.server :as server])
     (:require [sockso-repl.print :as print])
-    (:require [sockso-repl.audio :as audio])
+    (:require [sockso-repl.player :as player])
     (:require [clojure.string :as string]))
 
 (defmulti command :name)
@@ -40,13 +40,18 @@
 (defcommand :play
     "Play the specified music item"
     [id]
-    (audio/play-id id))
+    (player/player-add-id id))
 
 (defcommand :artists
     "Display artists"
     []
     (let [url (server/url "/api/artists?limit=-1")]
         (print/music-items (urls/url-get-json url))))
+
+(defcommand :playlist
+    "Show the current playlist"
+    []
+    (print/playlist (player/player-playlist)))
 
 (defcommand :exit
     "Exit the REPL"
@@ -88,5 +93,6 @@
         (recur))))
 
 (defn -main[]
+    (player/player-start)
     (run-repl))
 
