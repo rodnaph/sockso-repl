@@ -8,14 +8,14 @@
     "Create a map from the info and URL lines"
     [info url]
     {:url url
-     :info (second (string/split info #","))})
+     :info (string/join "," (rest (string/split info #",")))})
 
 (defn- m3u-parse
     "Parse some m3u data"
     [data]
     (loop [lines (rest data) items '()]
         (if (empty? lines)
-            items
+            (reverse items)
             (let [info (first lines)
                   url (second lines)]
                 (recur (drop 2 lines)

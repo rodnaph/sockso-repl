@@ -10,8 +10,9 @@
     "Try and play the next track in the queue"
     []
     (if (not (empty? @p))
-        (audio/play-item (first @p))
-        (swap! p (partial drop 1))))
+        (let [item (first @p)]
+            (swap! p (partial drop 1))
+            (audio/play-item item))))
 
 (defn player-add-urls
     "Add URLs to play"

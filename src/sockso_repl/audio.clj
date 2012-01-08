@@ -15,7 +15,7 @@
 (defn play-item
     "Play a music item map of URL and info"
     [item]
-    (println (format "Play: %s (%s)" (item :info) (item :url)))
+    (println (format "\nPlay: %s" (item :info)))
     (cmd (format "mpg123 %s" (item :url))))
 
 (defn play-url
