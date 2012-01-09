@@ -13,13 +13,13 @@
         (waitFor))) 
 
 (defn play-item
-    "Play a music item map of URL and info"
+    "Play a music item map"
     [item]
-    (println (format "\nPlay: %s" (item :info)))
+    (println (format "\nPlay: %s" (item :name)))
     (cmd (format "mpg123 %s" (item :url))))
 
 (defn play-url
     "Play the music specified by the ID (eg. al123, tr456, etc...)"
     [url]
-    (play-item {:info url :url url}))
+    (play-item {:name url :url url}))
 

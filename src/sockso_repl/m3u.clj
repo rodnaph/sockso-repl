@@ -4,24 +4,23 @@
     (:require [sockso-repl.urls :as urls])
     (:require [clojure.string :as string]))
 
-(defn- m3u-parse-info
-    "Create a map from the info and URL lines"
-    [info url]
+(defn- parse-track
+    "Parse a pair of track info lines from m3u"
+    [[info url]]
     {:url url
-     :info (string/join "," (rest (string/split info #",")))})
+     :id (second (re-matches #".*stream/(\d+).*" url))
+     :type "tr"
+     :name (string/join "," (rest (string/split info #",")))})
+
+(defn- track-seq
+    "Creates a sequence of pairs of lines for track info. Input should be all lines of m3u"
+    [lines]
+    (partition 2 (rest lines)))
 
 (defn- m3u-parse
     "Parse some m3u data"
-    [data]
-    (loop [lines (rest data) items '()]
-        (if (empty? lines)
-            (reverse items)
-            (let [info (first lines)
-                  url (second lines)]
-                (recur (drop 2 lines)
-                       (if (and info url)
-                           (cons (m3u-parse-info info url) items)
-                           items))))))
+    [lines]
+    (map parse-track (track-seq lines)))
 
 (defn m3u-parse-url
     "Parse the m3u data from a URL"

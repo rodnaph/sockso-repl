@@ -62,5 +62,23 @@
     "Print the current playlist"
     [playlist]
     (doseq [item playlist]
-        (println (format "> %s" (item :info)))))
+        (println (format "#tr%s %s" 
+            (item :id)
+            (item :name)))))
+
+(defn artist-album
+    "Print an artists album"
+    [album]
+    (println (format "\tAlbum: %s (#al%s)" 
+        (get album "name")
+        (get album "id"))))
+
+(defn artist
+    "Print an artists info"
+    [artist]
+    (println (format "Artist: %s (#ar%s)" 
+        (get artist "name")
+        (get artist "id")))
+    (doseq [album (get artist "albums")]
+        (artist-album album)))
 

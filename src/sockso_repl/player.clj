@@ -4,20 +4,20 @@
     (:require [sockso-repl.audio :as audio])
     (:require [sockso-repl.server :as server]))
 
-(def p (atom '()))
+(def playlist (atom '()))
 
 (defn- play-next-track
     "Try and play the next track in the queue"
     []
-    (if (not (empty? @p))
-        (let [item (first @p)]
-            (swap! p (partial drop 1))
+    (if (not (empty? @playlist))
+        (let [item (first @playlist)]
+            (swap! playlist (partial drop 1))
             (audio/play-item item))))
 
 (defn player-add-urls
     "Add URLs to play"
     [urls]
-    (swap! p concat urls))
+    (swap! playlist concat urls))
 
 (defn player-add-id
     "Play some music by ID"
@@ -36,10 +36,10 @@
 (defn player-playlist
     "Returns the current playlist"
     []
-    @p)
+    @playlist)
 
 (defn player-playlist-clear
     "Clears the playlist"
     []
-    (reset! p '()))
+    (reset! playlist '()))
 

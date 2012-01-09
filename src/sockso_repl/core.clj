@@ -48,6 +48,12 @@
     (let [url (server/url "/api/artists?limit=-1")]
         (print/music-items (urls/url-get-json url))))
 
+(defcommand :artist
+    "Display an individual artist"
+    [id]
+    (print/artist (urls/url-get-json 
+        (server/url "/api/artists/%s" (.substring id 2)))))
+
 (defcommand :playlist
     "Show the current playlist"
     []
