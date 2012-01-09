@@ -25,7 +25,7 @@
     [resource & args]
     (get-json (str "/api" resource) args))
 
-(defn api-search
+(defn sockso-search
     "Search sockso, returns all kinds of music items"
     [query]
     (map parse-search-result
