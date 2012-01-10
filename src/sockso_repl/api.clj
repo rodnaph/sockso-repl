@@ -39,8 +39,8 @@
 
 (defn sockso-playlist
     "Return a playlist as a lazyseq of lines"
-    ([url] (sockso-playlist url "m3u"))
+    ([url] (sockso-playlist url :m3u))
     ([url type]
-        (let [url (format "/%s/%s" type url)]
+        (let [url (format "/%s/%s" (name type) url)]
             (line-seq (get-reader url)))))
 
