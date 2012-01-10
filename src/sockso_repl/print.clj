@@ -22,16 +22,19 @@
 
 (defn- format-music-item
     "Print a music item"
-    [item & prefix]
+    [{:keys [id name type]}]
     (format "#%s%s %s" 
-        (if (empty? prefix) "" (first prefix))
-        (get item "id")
-        (get item "name")))
+        (or type "") id name))
 
 (defn music-items
-    [lst]
+    [lst type]
     (doseq [item lst]
-        (println (format-music-item item "ar"))))
+        (println (format-music-item 
+            (assoc item :type type)))))
+
+(defn artists
+    [lst]
+    (music-items lst "ar"))
 
 (defn help
     "Prints help information"
@@ -68,17 +71,13 @@
 
 (defn artist-album
     "Print an artists album"
-    [album]
-    (println (format "\tAlbum: %s (#al%s)" 
-        (get album "name")
-        (get album "id"))))
+    [{:keys [id name]}]
+    (println (format "\tAlbum: %s (#al%s)" name id)))
 
 (defn artist
     "Print an artists info"
-    [artist]
-    (println (format "Artist: %s (#ar%s)" 
-        (get artist "name")
-        (get artist "id")))
-    (doseq [album (get artist "albums")]
+    [{:keys [id name albums]}]
+    (println (format "Artist: %s (#ar%s)" name id))
+    (doseq [album albums]
         (artist-album album)))
 

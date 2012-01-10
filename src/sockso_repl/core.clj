@@ -1,7 +1,7 @@
 
 (ns sockso-repl.core
     (:gen-class)
-    (:require [sockso-repl.urls :as urls])
+    (:use [sockso-repl.api])
     (:require [sockso-repl.server :as server])
     (:require [sockso-repl.print :as print])
     (:require [sockso-repl.player :as player])
@@ -29,8 +29,8 @@
 (defcommand :search
     "Search the current server"
     [query]
-    (let [url (server/url "/json/search/%s" query)]
-        (print/search-results (urls/url-get-json url))))
+    (print/search-results 
+        (sockso-search query)))
 
 (defcommand :help
     "Print a help information"
@@ -45,14 +45,15 @@
 (defcommand :artists
     "Display artists"
     []
-    (let [url (server/url "/api/artists?limit=-1")]
-        (print/music-items (urls/url-get-json url))))
+    (print/artists
+        (sockso-api "/artists?limit=-1")))
 
 (defcommand :artist
     "Display an individual artist"
     [id]
-    (print/artist (urls/url-get-json 
-        (server/url "/api/artists/%s" (.substring id 2)))))
+    (print/artist
+        (sockso-api "/artists/%d"
+            (.substring id 2))))
 
 (defcommand :playlist
     "Show the current playlist"
